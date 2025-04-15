@@ -29,7 +29,7 @@ def get_questions_for_book(mds: list[str], name: str, author: str, story: bool =
     Mezi otázkami by měli být otázky:
     Na hlavní postavy, na autora, na literálně historický kontext, na jazyk, na hlavní myšlenky, stylistika a na další věci obsažené v rozboru.
     V případě že k nějákému rozboru není otázka, tak ji vynechej.
-    Pokud je to možné vygeneruj otázek alespoň 10."""
+    Pokud je to možné vygeneruj alespoň 10 nebo více otázek."""
     if len(mds) == 1:
         question = question_singular + question
         question += mds[0]
