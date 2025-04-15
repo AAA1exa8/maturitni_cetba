@@ -19,6 +19,7 @@ def get_filtered_mds_for_book(book_name: str, author: str) -> MDs:
         ).execute()
         for to_remove in selected:
             del urls[to_remove]
+        print("Fetching Breakdowns")
         for breakdown_name, url in urls.items():
             md = get_md_for_book(url)
             mds.append(md)
