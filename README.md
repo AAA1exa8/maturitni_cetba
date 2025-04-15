@@ -10,6 +10,8 @@ Po naklonování repa spusťte:
 pip install -r requirements.txt
 ```
 
+Poté dejte svoje API key do .env
+
 ## Použití
 
 použijte pomocí
