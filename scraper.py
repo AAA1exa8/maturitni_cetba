@@ -19,7 +19,7 @@ def get_urls_for_book(name: str) -> dict[str, str]:
                 cached_list[link.text.strip()] = str(href).replace(BASE_URL, "")
     urls = {}
     for book_name, url in cached_list.items():
-        if name in book_name:
+        if name.lower() in book_name.lower():
             urls[book_name] = url
     return urls
 

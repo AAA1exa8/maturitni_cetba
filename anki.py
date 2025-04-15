@@ -15,20 +15,26 @@ def create_deck(q_and_as: list[BookQandA], name: str, file: str):
                 'qfmt': '{{Question}}',
                 'afmt': '{{FrontSide}}<hr id="answer">{{Answer}}',
             },
-        ])
+        ]
+    )
+
     my_deck = genanki.Deck(
         2059400110,
         name
     )
-    qa_list = []
-    for qas in q_and_as:
-        for qa in qas.q_and_as:
-            qa_list.append(qa)
-    for question, answer in qa_list:
-        my_note = genanki.Note(
-            model=my_model,
-            fields=[question, answer]
-        )
-        my_deck.add_note(my_note)
+
+    for book in q_and_as:
+        for question, answer in book.q_and_as:
+            formatted_question = f"""<div style="font-size: 1.5em; font-weight: bold;">{book.book_title}</div>
+<div><em>{book.author}</em></div>
+<br>
+{question}"""
+
+            my_note = genanki.Note(
+                model=my_model,
+                fields=[formatted_question, answer]
+            )
+            my_deck.add_note(my_note)
+
     genanki.Package(my_deck).write_to_file(file)
 
