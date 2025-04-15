@@ -5,12 +5,12 @@ from InquirerPy import inquirer
 from InquirerPy.base.control import Choice
 from InquirerPy.separator import Separator
 from scraper import get_urls_for_book, get_md_for_book
-from shared import BookQandA
+from shared import BookQandA, MDs
 from ai import get_questions_for_book
 from anki import create_deck
 
-def get_q_and_as_for_book(breakdown_name: str, author: str, story: bool) -> BookQandA:
-    urls = get_urls_for_book(breakdown_name)
+def get_filtered_mds_for_book(book_name: str, author: str) -> MDs:
+    urls = get_urls_for_book(book_name)
     if urls:
         mds = []
         selected = inquirer.checkbox(
@@ -22,11 +22,10 @@ def get_q_and_as_for_book(breakdown_name: str, author: str, story: bool) -> Book
         for breakdown_name, url in urls.items():
             md = get_md_for_book(url)
             mds.append(md)
-        q_and_as = get_questions_for_book(mds, breakdown_name, author, story)
-        return q_and_as
+        return MDs(book_name, author, mds)
     else:
-        print(f"No URLs found for book: {breakdown_name}")
-        raise ValueError(f"No URLs found for book: {breakdown_name}")
+        print(f"No URLs found for book: {book_name}")
+        raise ValueError(f"No URLs found for book: {book_name}")
 
         
 
@@ -45,10 +44,15 @@ def main():
         reader = csv.reader(f)
         for row in reader:
             books.append((row[0], row[1]))
-    q_and_ass: list[BookQandA] = []
+    book_mds: list[MDs] = []
     for book, author in books:
-        q_and_as = get_q_and_as_for_book(book, author, args.story)
-        q_and_ass.append(q_and_as)
+        mds = get_filtered_mds_for_book(book, author)
+        book_mds.append(mds)
+    q_and_ass: list[BookQandA] = []
+    for mds in book_mds:
+        print(f"Getting questions for {mds.book_title}")
+        q_and_as = get_questions_for_book(mds.mds, mds.book_title, mds.author, args.story)
+        print(f"Got {len(q_and_as.q_and_as)} for {q_and_as.book_title}")
     if args.split:
         for q_and_as in q_and_ass:
             create_deck([q_and_as], q_and_as.book_title, q_and_as.book_title.lower().replace(" ", "_")+".apkg")

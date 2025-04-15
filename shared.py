@@ -3,3 +3,9 @@ class BookQandA:
         self.book_title = book_title
         self.author = author
         self.q_and_as = q_and_as
+
+class MDs:
+    def __init__(self, book_title: str, author: str, mds: list[str]):
+        self.book_title = book_title
+        self.author = author
+        self.mds = mds
