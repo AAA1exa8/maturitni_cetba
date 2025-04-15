@@ -38,7 +38,7 @@ def get_questions_for_book(mds: list[str], name: str, author: str, story: bool =
         question += "\n\n".join(mds)
 
     chat_completion = client.chat.completions.create(
-        model="o3-mini",
+        model="gpt-4.1-mini",
         response_format={"type": "json_object"},
         messages=[
             {

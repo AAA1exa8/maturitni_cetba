@@ -53,11 +53,14 @@ def main():
     for mds in book_mds:
         print(f"Getting questions for {mds.book_title}")
         q_and_as = get_questions_for_book(mds.mds, mds.book_title, mds.author, args.story)
+        q_and_ass.append(q_and_as)
         print(f"Got {len(q_and_as.q_and_as)} for {q_and_as.book_title}")
     if args.split:
         for q_and_as in q_and_ass:
+            print(f"creating deck for {q_and_as.book_title}")
             create_deck([q_and_as], q_and_as.book_title, q_and_as.book_title.lower().replace(" ", "_")+".apkg")
     else:
+        print("Creating deck")
         create_deck(q_and_ass, "Maturita Grind", "maturita_grind.apkg")
 
 
