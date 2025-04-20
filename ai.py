@@ -21,15 +21,14 @@ def get_questions_for_book(mds: list[str], name: str, author: str, story: bool =
     question_singular = f"Vygeneruj z následujícího rozboru otázky které zjišťují znalosti každé části rozboru. {story_string}"
     question_multiple = f"Vygeneruj z následujících rozborů otázky které zjišťují znalosti každé části rozboru. {story_string}"
     question = """
-    Otázky by měli pokrývat celý rozbor.
     Vždy vygeneruj otázku a odpověď vzatou z rozboru.
-    V odpovědi budou pouze otázky a odpovědi.
-    Odpovědi by kde je to možné měli dosahovat až pěti vět.
+    Otázky by měli pokrývat všechna téma obsažená v rozboru.
+    Odpovědi by měli být výstižné a postihovat všechny informace obsažené v rozboru.
+    V připadě že to je vhodné použij odrážky oddělené novou řádkou začínající pomlčkou.
     V případě že rozbory mají stejné informace neopakuj otázky
     Mezi otázkami by měli být otázky:
     Na hlavní postavy, na autora, na literálně historický kontext, na jazyk, na hlavní myšlenky, stylistika a na další věci obsažené v rozboru.
-    V případě že k nějákému rozboru není otázka, tak ji vynechej.
-    Pokud je to možné vygeneruj alespoň 10 nebo více otázek."""
+    V případě že k nějákému rozboru není otázka, tak ji vynechej."""
     if len(mds) == 1:
         question = question_singular + question
         question += mds[0]
@@ -75,7 +74,7 @@ def get_questions_for_book(mds: list[str], name: str, author: str, story: bool =
         if "question" not in question or "answer" not in question:
             print("Invalid question format:", question)
             raise ValueError("Invalid question format")
-        questions_and_answers.append((question["question"], question["answer"]))
+        questions_and_answers.append((question["question"], question["answer"].replace("\n", "<br>")))
     return BookQandA(name, author, questions_and_answers)
     
 
